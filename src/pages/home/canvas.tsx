@@ -36,7 +36,8 @@ const effect = [
   { blur: 35, color: '#0ff' },
 ];
 
-const fps = Number(new URLSearchParams(window.location.search).get('fps') || 60);
+const fps = new URLSearchParams(window.location.search).get('fps');
+
 const max = Math.max(
   2,
   Math.min(
@@ -87,12 +88,17 @@ const Canvas = memo(() => {
             }
             lastPath2 = p;
           });
-          const shiftedPath = path.current.shift();
-          if (shiftedPath) {
-            path.current = path.current.concat(shiftedPath);
-          }
+
+          const moveLastToFirst = () => {
+            const last = path.current.pop();
+            if (last) {
+              path.current.unshift(last);
+            }
+          };
+          moveLastToFirst();
         };
-        EnterFrame.setFPS(fps);
+
+        if (fps) EnterFrame.setFPS(Number(fps));
         EnterFrame.add(draw);
         EnterFrame.play();
       }
