@@ -69,7 +69,7 @@ const Canvas = memo(() => {
                 ctx.shadowBlur = blur;
                 ctx.shadowColor = color;
                 ctx.beginPath();
-                ctx.lineWidth = pathWidth - i * (pathWidth / paths.length);
+                ctx.lineWidth = pathWidth - i * (pathWidth / max);
                 ctx.moveTo(lastPath.x, lastPath.y);
                 ctx.lineTo(p.x, p.y);
                 ctx.stroke();
@@ -81,7 +81,7 @@ const Canvas = memo(() => {
           currentPath.forEach((p, i) => {
             if (lastPath2) {
               ctx.beginPath();
-              ctx.lineWidth = pathWidth - i * (pathWidth / paths.length);
+              ctx.lineWidth = pathWidth - i * (pathWidth / max);
               ctx.moveTo(lastPath2.x, lastPath2.y);
               ctx.lineTo(p.x, p.y);
               ctx.stroke();
@@ -102,6 +102,35 @@ const Canvas = memo(() => {
         EnterFrame.add(draw);
         EnterFrame.play();
       }
+
+      window.addEventListener('keydown', (e) => {
+        const { key } = e;
+        let currentMax = max;
+        let currentFps = Number(fps);
+        switch (key) {
+          case 'ArrowUp':
+            currentMax = max + 1;
+            break;
+          case 'ArrowDown':
+            currentMax = max - 1;
+            break;
+          case 'ArrowLeft':
+            currentFps = Number(fps) - 1;
+            break;
+          case 'ArrowRight':
+            currentFps = Number(fps) + 1;
+            break;
+
+          default:
+            break;
+        }
+        if (max !== currentMax || (fps && currentFps !== Number(fps))) {
+          const url = new URL(window.location.href);
+          url.searchParams.set('max', Math.max(Math.min(currentMax, 20), 2).toString());
+          if (fps) url.searchParams.set('fps', currentFps.toString());
+          window.location.href = url.toString();
+        }
+      });
     }
   }, []);
   return <canvas ref={ref} width={500} height={500} className='Canvas' />;
