@@ -16,11 +16,11 @@ export default {
     },
     colors: {
       ...color,
-      primary: '#870000',
+      primary: '#dca54c',
       secondary: '#ff6600',
       tertiary: '#ff0066',
       quaternary: '#00ff00',
-      backgroundColor: '#111',
+      backgroundColor: '#09090b',
       textColor: '#eee',
     },
     extend: {},
