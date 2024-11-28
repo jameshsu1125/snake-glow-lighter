@@ -8,9 +8,15 @@ const Home = memo(() => {
 
   return (
     <div className='Home'>
-      <HomeContext.Provider value={[state, setState]}>
-        <Canvas />
-      </HomeContext.Provider>
+      <div>
+        <div>
+          <div className='canvas'>
+            <HomeContext.Provider value={[state, setState]}>
+              <Canvas />
+            </HomeContext.Provider>
+          </div>
+        </div>
+      </div>
     </div>
   );
 });
